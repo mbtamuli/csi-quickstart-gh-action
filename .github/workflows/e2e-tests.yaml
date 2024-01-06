@@ -28,6 +28,7 @@ jobs:
           name: docker-tags
           path: .docker-tags
           run-id: 7430902130
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: |
