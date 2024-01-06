@@ -6,7 +6,7 @@ on:
     types: [completed]
 
 permissions:
-  packages: write
+  actions: read
 
 jobs:
   on-success:
