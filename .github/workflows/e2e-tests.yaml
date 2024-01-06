@@ -27,7 +27,7 @@ jobs:
         with:
           name: docker-tags
           path: .docker-tags
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: 7430902130
 
       - name: Run tests
         run: |
