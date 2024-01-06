@@ -73,7 +73,7 @@ jobs:
           cat .docker-tags
       -
         name: Upload docker tag as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-tags
           path: .docker-tags
