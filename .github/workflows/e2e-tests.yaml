@@ -31,5 +31,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
+        working-directory: ./emptyDirClone
         run: |
+          echo "Docker Tag: $(cat ../.docker-tags)"
           make e2e E2E_TEST_ARGS="--fail-fast --v 6 --image-tag lalala"
