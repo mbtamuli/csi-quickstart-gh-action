@@ -1,15 +1,22 @@
-name: emptydirclone-image-build-push
+name: ghcr-image-build-push
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'main'
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - 'main'
+  workflow_call:
+    inputs:
+      context:
+        required: true
+        type: string
+      dockerfile:
+        type: string
+      image:
+        type: string
+    outputs:
+      tag:
+        description: "Docker tag"
+        value: ${{ jobs.image-build-push.outputs.output1 }}
+      secondword:
+        description: "The second output string"
+        value: ${{ jobs.example_job.outputs.output2 }}
 
 permissions:
   packages: write
@@ -17,22 +24,15 @@ permissions:
 jobs:
   image-build-push:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.step1.outputs.firstword }}
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
       -
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -71,14 +71,3 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      -
-        name: Write docker tags to path
-        run: |
-          echo "${{ steps.meta.outputs.tags }}" >> .docker-tags
-          cat .docker-tags
-      -
-        name: Upload docker tag as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-tags
-          path: .docker-tags
