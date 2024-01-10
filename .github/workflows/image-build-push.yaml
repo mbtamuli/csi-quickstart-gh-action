@@ -3,20 +3,13 @@ name: ghcr-image-build-push
 on:
   workflow_call:
     inputs:
-      context:
+      directory:
         required: true
-        type: string
-      dockerfile:
-        type: string
-      image:
         type: string
     outputs:
       tag:
-        description: "Docker tag"
-        value: ${{ jobs.image-build-push.outputs.output1 }}
-      secondword:
-        description: "The second output string"
-        value: ${{ jobs.example_job.outputs.output2 }}
+        description: "Container image tag"
+        value: ${{ jobs.image-build-push.outputs.tag }}
 
 permissions:
   packages: write
@@ -25,7 +18,7 @@ jobs:
   image-build-push:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.step1.outputs.firstword }}
+      tag: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
     steps:
       -
         name: Docker meta
@@ -58,7 +51,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:emptyDirClone"
+          context: "{{defaultContext}}:${{ inputs.directory }}"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
