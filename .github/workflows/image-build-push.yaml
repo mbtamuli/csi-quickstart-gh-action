@@ -1,4 +1,4 @@
-name: ghcr-image-build-push
+name: image-build-push
 
 on:
   workflow_call:
