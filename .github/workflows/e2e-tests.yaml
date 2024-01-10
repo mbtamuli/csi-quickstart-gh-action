@@ -13,6 +13,7 @@ on:
 
 permissions:
   actions: read
+  packages: write
 
 jobs:
   image-build-push:
