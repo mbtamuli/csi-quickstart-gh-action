@@ -46,8 +46,7 @@ jobs:
           kubectl get nodes
           docker tag "ghcr.io/${{ github.repository }}:${{ needs.build-image.outputs.tag }}" "ghcr.io/${{ github.repository }}:debug"
           kind load docker-image "ghcr.io/${{ github.repository }}:debug" --name test
-
-#make e2e E2E_TEST_ARGS="--fail-fast --v 6 --image-tag ${{ needs.build-image.outputs.tag }}"
+          make e2e E2E_TEST_ARGS="--fail-fast --v 6 --image-tag ${{ needs.build-image.outputs.tag }}"
       -
         name: Cleanup
         if: always()
