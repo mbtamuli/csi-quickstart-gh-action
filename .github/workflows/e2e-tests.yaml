@@ -35,13 +35,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
-        name: Pull docker image
-        run: |
-          docker pull "ghcr.io/${{ github.repository }}:${{ needs.build-image.outputs.tag }}"
-      -
         name: Run tests
         working-directory: ./emptyDirClone
         run: |
+          docker pull "ghcr.io/${{ github.repository }}:${{ needs.build-image.outputs.tag }}"
           make e2e E2E_TEST_ARGS="--fail-fast --v 6 --image-tag ${{ needs.build-image.outputs.tag }}"
       -
         name: Cleanup
