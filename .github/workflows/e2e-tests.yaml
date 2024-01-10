@@ -23,7 +23,7 @@ jobs:
     secrets: inherit
   e2e-tests:
     runs-on: ubuntu-latest
-    needs: image-build-push
+    needs: build-image
     steps:
       -
         name: Dump GitHub context
