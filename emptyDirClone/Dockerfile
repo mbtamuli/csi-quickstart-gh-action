@@ -15,20 +15,8 @@ RUN --mount=target=. \
     CGO_ENABLED=0 GOOS=linux \
     go build -ldflags "-s -w -X main.version=${VERSION}" -o /emptydirclone main.go
 
-FROM gcr.io/distroless/static-debian12:debug as debug
-RUN export DEBIAN_FRONTEND=noninteractive \
-    apt-get update && \
-    apt install -y --no-install-recommends \
-        mount && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=builder /emptydirclone /emptydirclone
-ENTRYPOINT ["/emptydirclone"]
-
-FROM gcr.io/distroless/static-debian12 as final
-RUN export DEBIAN_FRONTEND=noninteractive \
-    apt-get update && \
-    apt install -y --no-install-recommends \
-        mount && \
-    rm -rf /var/lib/apt/lists/*
+FROM alpine
+# Add util-linux to get a new version of losetup.
+RUN apk update && apk upgrade && apk add util-linux coreutils
 COPY --from=builder /emptydirclone /emptydirclone
 ENTRYPOINT ["/emptydirclone"]
