@@ -10,12 +10,11 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,source=go.mod,target=go.mod \
     go mod download -x
 
-ARG TARGETOS
 ARG TARGETARCH
 
 RUN --mount=type=bind,target=. \
     --mount=type=cache,target=/go/pkg/mod \
-    GOOS=$TARGETOS GOARCH=$TARGETARCH \
+    CGO_ENABLED=0 GOARCH=$TARGETARCH \
     go build -ldflags "-s -w -X main.version=${VERSION}" -o /emptydirclone main.go
 
 FROM alpine
