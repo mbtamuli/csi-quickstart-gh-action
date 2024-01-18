@@ -58,6 +58,7 @@ jobs:
           push: true
           build-args:
             BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
+            VERSION=${{ github.sha }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
