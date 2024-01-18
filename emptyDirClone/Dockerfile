@@ -15,7 +15,6 @@ ARG TARGETARCH
 
 RUN --mount=type=bind,target=. \
     --mount=type=cache,target=/go/pkg/mod \
-    --mount=type=cache,target=/root/.cache/go-build \
     GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -ldflags "-s -w -X main.version=${VERSION}" -o /emptydirclone main.go
 
