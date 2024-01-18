@@ -29,8 +29,7 @@ var (
 
 func TestMain(m *testing.M) {
 	const (
-		csiNamespace   string = "emptydirclone"
-		csiPluginImage string = "ghcr.io/mbtamuli/csi-quickstart/emptydirclone"
+		csiNamespace string = "emptydirclone"
 	)
 	var (
 		imageTag           = "debug"
@@ -44,7 +43,6 @@ func TestMain(m *testing.M) {
 	testEnv.Setup(
 		envfuncs.CreateCluster(kind.NewProvider(), kindClusterName),
 		envfuncs.CreateNamespace(csiNamespace),
-		envfuncs.LoadDockerImageToCluster(kindClusterName, fmt.Sprintf("%s:%s", csiPluginImage, imageTag)),
 		deployEmptyDirClone(csiNamespace, csiPluginPodLabels),
 		envfuncs.CreateNamespace(namespace),
 	)
