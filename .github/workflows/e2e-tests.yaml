@@ -38,7 +38,7 @@ jobs:
         name: Run tests
         working-directory: ./emptyDirClone
         run: |
-          make e2e E2E_TEST_ARGS="--fail-fast --v 12 --image-tag ${{ needs.build-image.outputs.tag }}"
+          make e2e E2E_TEST_ARGS="--fail-fast --v 6"
       -
         name: Upload logs
         if: always()

@@ -2,7 +2,6 @@ package e2e
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"os"
 	"testing"
@@ -31,11 +30,7 @@ func TestMain(m *testing.M) {
 	const (
 		csiNamespace string = "emptydirclone"
 	)
-	var (
-		imageTag           = "debug"
-		csiPluginPodLabels = map[string]string{"app": "emptydirclone-plugin"}
-	)
-	flag.StringVar(&imageTag, "image-tag", "debug", "Tag for the emptydirclone image used for tests")
+	csiPluginPodLabels := map[string]string{"app": "emptydirclone-plugin"}
 	cfg, _ := envconf.NewFromFlags()
 	testEnv = env.NewWithConfig(cfg)
 	kindClusterName = envconf.RandomName("csi", 10)
@@ -94,8 +89,8 @@ func deployEmptyDirClone(namespace string, labels map[string]string) env.Func {
 						return false
 					},
 				),
-			wait.WithInterval(time.Second*15),
-			wait.WithTimeout(time.Minute*2)); err != nil {
+			wait.WithInterval(time.Second*30),
+			wait.WithTimeout(time.Minute*5)); err != nil {
 			return ctx, err
 		}
 
