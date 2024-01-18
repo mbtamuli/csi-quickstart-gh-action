@@ -38,9 +38,14 @@ jobs:
         name: Run tests
         working-directory: ./emptyDirClone
         run: |
-          docker pull "ghcr.io/${{ github.repository }}:${{ needs.build-image.outputs.tag }}"
-          docker image ls
           make e2e E2E_TEST_ARGS="--fail-fast --v 12 --image-tag ${{ needs.build-image.outputs.tag }}"
+      -
+        name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-logs
+          path: ./emptyDirClone/tests/e2e/logs/
       -
         name: Cleanup
         if: always()
